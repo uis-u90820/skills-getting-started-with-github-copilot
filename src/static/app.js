@@ -95,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
           );
         }
         renderActivities(activitiesData);
+        await fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
@@ -138,6 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
           activitiesData[activity].participants.push(email);
         }
         renderActivities(activitiesData);
+        await fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
