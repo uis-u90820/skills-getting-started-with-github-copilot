@@ -4,6 +4,51 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
   const initialSelectOption = activitySelect.innerHTML;
+  let activitiesData = {};
+
+  function renderActivities(activities) {
+    activitiesList.innerHTML = "";
+    activitySelect.innerHTML = initialSelectOption;
+
+    Object.entries(activities).forEach(([name, details]) => {
+      const activityCard = document.createElement("div");
+      activityCard.className = "activity-card";
+
+      const spotsLeft = details.max_participants - details.participants.length;
+      const participants = details.participants
+        .map((participant) => `
+          <li class="participant-item">
+            <div class="participant-row">
+              <span class="participant-name">${participant}</span>
+              <button type="button" class="remove-participant-button" data-activity="${name}" data-email="${participant}" aria-label="Remove ${participant} from ${name}">
+                &times;
+              </button>
+            </div>
+          </li>
+        `)
+        .join("");
+
+      activityCard.innerHTML = `
+        <h4>${name}</h4>
+        <p>${details.description}</p>
+        <p><strong>Schedule:</strong> ${details.schedule}</p>
+        <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+        <div class="participants-section">
+          <p class="participants-title">Participants</p>
+          <ul class="participants-list">
+            ${participants || "<li>No participants yet</li>"}
+          </ul>
+        </div>
+      `;
+
+      activitiesList.appendChild(activityCard);
+
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = name;
+      activitySelect.appendChild(option);
+    });
+  }
 
   // Function to fetch activities from API
   async function fetchActivities() {
@@ -11,52 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch("/activities", {
         cache: "no-store",
       });
-      const activities = await response.json();
+      activitiesData = await response.json();
 
-      // Clear loading message
-      activitiesList.innerHTML = "";
-      activitySelect.innerHTML = initialSelectOption;
-
-      // Populate activities list
-      Object.entries(activities).forEach(([name, details]) => {
-        const activityCard = document.createElement("div");
-        activityCard.className = "activity-card";
-
-        const spotsLeft = details.max_participants - details.participants.length;
-        const participants = details.participants
-          .map((participant) => `
-            <li class="participant-item">
-              <div class="participant-row">
-                <span class="participant-name">${participant}</span>
-                <button type="button" class="remove-participant-button" data-activity="${name}" data-email="${participant}" aria-label="Remove ${participant} from ${name}">
-                  &times;
-                </button>
-              </div>
-            </li>
-          `)
-          .join("");
-
-        activityCard.innerHTML = `
-          <h4>${name}</h4>
-          <p>${details.description}</p>
-          <p><strong>Schedule:</strong> ${details.schedule}</p>
-          <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
-          <div class="participants-section">
-            <p class="participants-title">Participants</p>
-            <ul class="participants-list">
-              ${participants || "<li>No participants yet</li>"}
-            </ul>
-          </div>
-        `;
-
-        activitiesList.appendChild(activityCard);
-
-        // Add option to select dropdown
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-        activitySelect.appendChild(option);
-      });
+      renderActivities(activitiesData);
     } catch (error) {
       activitiesList.innerHTML = "<p>Failed to load activities. Please try again later.</p>";
       console.error("Error fetching activities:", error);
@@ -86,7 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
-        await fetchActivities();
+        activitiesData[activity].participants.push(email);
+        renderActivities(activitiesData);
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
