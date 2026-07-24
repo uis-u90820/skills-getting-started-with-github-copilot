@@ -20,8 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
           <li class="participant-item">
             <div class="participant-row">
               <span class="participant-name">${participant}</span>
-              <button type="button" class="remove-participant-button" data-activity="${name}" data-email="${participant}" aria-label="Remove ${participant} from ${name}">
-                &times;
+              <button type="button" class="remove-participant-button delete-icon" data-activity="${name}" data-email="${participant}" aria-label="Delete participant ${participant} from ${name}" title="Delete participant">
+              
+                🗑
               </button>
             </div>
           </li>
