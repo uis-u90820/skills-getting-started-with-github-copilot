@@ -26,10 +26,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const participants = details.participants
           .map((participant) => `
             <li class="participant-item">
-              <span class="participant-name">${participant}</span>
-              <button type="button" class="remove-participant-button" data-activity="${name}" data-email="${participant}" aria-label="Remove ${participant} from ${name}">
-                &times;
-              </button>
+              <div class="participant-row">
+                <span class="participant-name">${participant}</span>
+                <button type="button" class="remove-participant-button" data-activity="${name}" data-email="${participant}" aria-label="Remove ${participant} from ${name}">
+                  &times;
+                </button>
+              </div>
             </li>
           `)
           .join("");
