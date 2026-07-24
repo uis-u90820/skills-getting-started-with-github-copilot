@@ -94,10 +94,12 @@ section h3 {
   margin: 0;
   padding: 0;
   color: #4a4a4a;
+  display: grid;
+  gap: 8px;
 }
 
 .participant-item {
-  margin-bottom: 8px;
+  margin: 0;
 }
 
 .participant-row {
@@ -105,41 +107,56 @@ section h3 {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #ffffff 0%, #f4f7ff 100%);
-  border: 1px solid #e5ebff;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ffffff 0%, #eef3ff 100%);
+  border: 1px solid #dbe5ff;
 }
 
 .participant-name {
   overflow-wrap: anywhere;
+  font-weight: 600;
+  color: #23315f;
 }
 
 .remove-participant-button {
   flex: 0 0 auto;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 999px;
-  border: 1px solid #d9dff5;
-  background: #fff;
-  color: #c62828;
-  font-size: 20px;
+  border: 1px solid #ffc9c9;
+  background: #fff5f5;
+  color: #b42318;
+  font-size: 18px;
+  font-weight: 700;
   line-height: 1;
   padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 1px 2px rgba(26, 35, 126, 0.08);
+  box-shadow: 0 1px 2px rgba(180, 35, 24, 0.12);
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .remove-participant-button:hover {
-  background: #ffebee;
-  border-color: #ef9a9a;
+  background: #ffe9e9;
+  border-color: #f6a9a9;
+  transform: translateY(-1px);
 }
 
 .remove-participant-button:focus-visible {
-  outline: 3px solid rgba(26, 35, 126, 0.2);
+  outline: 3px solid rgba(180, 35, 24, 0.22);
   outline-offset: 2px;
+}
+
+.participant-empty {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px dashed #d8deee;
+  color: #65708c;
+  background: #fafbff;
+  font-style: italic;
 }
 
 .form-group {
@@ -161,7 +178,7 @@ section h3 {
   font-size: 16px;
 }
 
-button {
+#signup-form button {
   background-color: #1a237e;
   color: white;
   border: none;
@@ -172,7 +189,7 @@ button {
   transition: background-color 0.2s;
 }
 
-button:hover {
+#signup-form button:hover {
   background-color: #3949ab;
 }
 

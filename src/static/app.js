@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="participants-section">
           <p class="participants-title">Participants</p>
           <ul class="participants-list">
-            ${participants || "<li>No participants yet</li>"}
+            ${participants || "<li class=\"participant-empty\">No participants yet</li>"}
           </ul>
         </div>
       `;
@@ -88,7 +88,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
-        activitiesData[activity].participants.push(email);
+        if (activitiesData[activity]) {
+          activitiesData[activity].participants = activitiesData[activity].participants.filter(
+            (participant) => participant !== email
+          );
+        }
         renderActivities(activitiesData);
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
@@ -129,7 +133,10 @@ document.addEventListener("DOMContentLoaded", () => {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
         signupForm.reset();
-        await fetchActivities();
+        if (activitiesData[activity] && !activitiesData[activity].participants.includes(email)) {
+          activitiesData[activity].participants.push(email);
+        }
+        renderActivities(activitiesData);
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
